@@ -181,7 +181,7 @@ fn main() {
     }
     if !PathBuf::from(format!("{temp_include}pg_config_os.h")).exists() {
         match target_os.as_str() {
-            "linux" => {
+            "linux" | "ios" => {
                 fs::copy(
                     format!("{path}src/include/port/linux.h"),
                     format!("{temp_include}pg_config_os.h"),
@@ -258,6 +258,16 @@ fn main() {
             basic_build.define("__WINDOWS__", None);
             basic_build.define("HAVE_SOCKLEN_T", Some("1"));
             (LIBPORTS_WINDOWS, LIBCOMMON_WINDOWS, LIBPQ_WINDOWS)
+        },
+        "ios" => {
+            basic_build.define("_GNU_SOURCE", None);
+            basic_build.define("HAVE_STRLCAT", None)
+                .define("HAVE_STRLCPY", None)
+                // Use Apple's secure string functions
+                .define("_FORTIFY_SOURCE", "2")
+                // Disable printf attribute for iOS
+                .define("PG_PRINTF_ATTRIBUTE", "printf");
+            (LIBPORTS_LINUX, LIBCOMMON_NOT_WINDOWS, LIBPQ_NOT_WINDOWS)
         }
         _ => unimplemented(),
     };
