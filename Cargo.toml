@@ -32,7 +32,7 @@ bindgen = "0.71.0"
 
 [features]
 default = []
-bundled = ["bundled_without_openssl", "pq-src/with-openssl"]
+bundled = ["bundled_without_openssl"]
 bundled_without_openssl = ["dep:pq-src"]
 buildtime_bindgen = ["dep:bindgen"]
 
