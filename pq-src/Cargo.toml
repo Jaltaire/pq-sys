@@ -202,6 +202,6 @@ openssl-sys = { version = "0.9.93", optional = true }
 cc = "1.0.83"
 
 [features]
-default = ["with-openssl"]
+default = []
 with-asan = []
 with-openssl = ["dep:openssl-sys"]
